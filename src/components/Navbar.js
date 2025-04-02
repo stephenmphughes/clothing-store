@@ -1,5 +1,6 @@
 import React from "react";
-import "./App.css"; // We'll define styles here
+import '../App.css';
+
 
 const Navbar = () => {
   return (
