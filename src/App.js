@@ -4,6 +4,7 @@ import ProductForm from "./components/ProductForm";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import { db } from "./firebase";
+import '../App.css'; // 
 import {
   collection,
   getDocs,
