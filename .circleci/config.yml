@@ -5,8 +5,8 @@ orbs:
 
 jobs:
   build-and-deploy:
-    docker:
-      - image: cimg/node:18.17.1
+    machine: true
+
     steps:
       - checkout
 
