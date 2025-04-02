@@ -4,16 +4,40 @@ orbs:
   node: circleci/node@5.1.0
 
 jobs:
-  build:
+  build-and-deploy:
     docker:
       - image: cimg/node:18.17.1
     steps:
       - checkout
+
       - node/install-packages:
           pkg-manager: npm
+
       - run:
           name: Run Tests
           command: npm test || echo "No tests yet"
+
       - run:
-          name: Build React App
-          command: npm run build
+          name: Build Docker Image
+          command: docker build -t clothing-store-app .
+
+      - add_ssh_keys:
+          fingerprints:
+            - "SHA256:Y9L6fcwQ2tQTZfd002V/Yll/HtfkIFNN7VyFoC1R0sE"
+
+      - run:
+          name: SSH to EC2 and Deploy
+          command: |
+            ssh -o StrictHostKeyChecking=no ubuntu@44.203.53.70 << 'EOF'
+              cd ~/clothing-store
+              git pull origin main
+              docker stop clothing-store-app || true
+              docker rm clothing-store-app || true
+              docker build -t clothing-store-app .
+              docker run -d -p 80:3000 --name clothing-store-app clothing-store-app
+            EOF
+
+workflows:
+  build-deploy:
+    jobs:
+      - build-and-deploy
