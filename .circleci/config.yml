@@ -1,0 +1,19 @@
+version: 2.1
+
+orbs:
+  node: circleci/node@5.1.0
+
+jobs:
+  build:
+    docker:
+      - image: cimg/node:18.17.1
+    steps:
+      - checkout
+      - node/install-packages:
+          pkg-manager: npm
+      - run:
+          name: Run Tests
+          command: npm test || echo "No tests yet"
+      - run:
+          name: Build React App
+          command: npm run build
