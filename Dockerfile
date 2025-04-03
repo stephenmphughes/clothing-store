@@ -11,8 +11,8 @@ RUN npm install
 # Copy all files
 COPY . .
 
-# App runs on port 3000
-EXPOSE 3000
+# Expose port 8443 (host) to map to 3000 (container)
+EXPOSE 8443
 
 # Start the React app
 CMD ["npm", "start"]
